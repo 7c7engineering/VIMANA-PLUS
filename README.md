@@ -1,45 +1,24 @@
-# VIMANA-STEM-FOR-ALL
-Github repo for VIMANA2 Opensource Flightcontroller Board for Tiny Smartphone controlled Air plane and other moving/flying/floating things
-<br>Suitable for STEM Education<br>
-Project Documentation : https://hackaday.io/project/190462-vimana-stem-for-all <br>
-Youtube Playlist : https://www.youtube.com/playlist?list=PL6rHZ-FYvZtEZ2F3nPtqbe_Y3SMQ8Gjly <br>
+# Vimana PLUS
+This is a fork of the original VIMANA STEM FOR ALL repository by butaniravi. 
 
-Github repo contain following
-1. VIMANA2 PCB Board BOM
-2. VIMANA2 PCB Board Gerber Files
-3. VIMANA2 Board Schematic
-4. VIMANA Landscape Mode Android Apk file
-5. VIMANA Portrait Mode Android Apk file
-6. ESP8266 Firmware to work as bridge between Android Application and N76E003 Slave Mcu (Need Arduino IDE with ESP8266 Package to Build Source)
-7. N76E003 Firmware and Library (Need Keil C51 or SDCC to build source)
+It will be used for STEM purposes to assemble a small plane and controll it with your phone.  However, the platform can be extended further by tinkering with the firmware.
 
-Keep Visiting this page for More updates..<br>
+## Hardware design
+There are a couple of differences in the hardware design:
+### 1. single SOC
+The ESP8266 SOC and N76E003 MCU are replaced by a single ESP32-S3-WROOM module. These are cheap and easily available.
+### 2. USB-C Connector
+The USB-C connector is used for programming and debugging the ESP32-S3. It connects to the internal USB-JTAG controller. Thus no special programmer is required to upload new firmware on the device.
 
-Happy Making, Happy Flying, Happy Breaking <br>
-Cheers....<br>
+_Note: The 5V USB will power the SOC and LEDs but not the motors and servos. Those will need an actual battery_
 
-Ravi
+### 3. Battery input protection
+There is a reverse polarity protection to protect the delicate electronics from plugging in the battery the wrong way.
 
-<p><strong>VIMANA BOARD BOTTOM SIDE :</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/1340081682333225660.png"></figure>
-<p><strong><br></strong></p>
-<p><strong>VIMANA BOARD TOP SIDE :</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/1068671682325831245.png"></figure>
-<p><strong><br></strong></p>
-<p><strong>VIMANA </strong><strong>Assembled</strong><strong>&nbsp;Board :&nbsp;</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/7654741682333772588.jpg"></figure>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/7213191682333798081.jpg"></figure>
-<p><strong><br></strong></p>
-<p><strong>VIMANA POWER TRAIN :&nbsp;</strong><br></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/9539521682333651594.jpg"></figure>
-<p><strong>VIMANA Most Basic differential Thrust Micro Airplane Configuration:</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/6345411682333908649.jpg"></figure>
-<p><strong>Fully Assembled Basic Version of&nbsp;</strong>Tractor Airplane Configuration with Differential Thrust<strong>:</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/1528601682334216017.jpg"></figure>
-<p><strong>Fully Assembled Basic Version of&nbsp;</strong>Pusher (canard) Airplane Configuration with Differential Thrust<strong>:</strong></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/2927001682403819020.jfif"></figure>
-<p><strong><br></strong></p>
-<p><strong>VIMANA Board With and Without IMU LSM6DS3 :&nbsp;</strong><br></p>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/8062281682418962163.jpeg"></figure>
-<figure><img class="lazy" src="https://cdn.hackaday.io/images/6111121682418971553.jpeg"></figure>
-<p>More Airplane configurations, its build instruction and Maiden Flight videos will be posted soon as its done..</p>
+For easy debugging there is a low-loss switchover from battery to USB-C power. This is usefull for tinkering on your desk without battery or propellers.
+
+### 4. Two RGB leds
+Two seperately controllable RGB leds are added to the board. These can be used for status indication or just for fun. These can also convey more information to the user than the original single color led.
+
+### 5. User-switch
+The addition of a switch opens the possibility to add extra functions to the board. For example switching between different flight modes, phone or iBus control, etc.
