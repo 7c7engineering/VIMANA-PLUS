@@ -6,5 +6,6 @@
 
 
 esp_err_t motor_init(void);
-
-esp_err_t motor_set_speed(int motor, int speed);
+esp_err_t servo_init(void);
+esp_err_t motor_set_speed(int motor, float speed);
+esp_err_t servo_set_angle(int servo, float angle);

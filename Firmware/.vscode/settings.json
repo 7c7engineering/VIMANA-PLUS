@@ -8,6 +8,7 @@
   "idf.port": "/dev/cu.usbmodem101",
   "files.associations": {
     "vimana_network.h": "c",
-    "motor.h": "c"
+    "motor.h": "c",
+    "leds.h": "c"
   }
 }

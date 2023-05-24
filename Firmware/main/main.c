@@ -54,6 +54,8 @@ void update_motors_no_servo(int16_t throttle, int16_t roll){
 
 }
 
+
+
 void vtask_plane_state_machine(void *pvParameters)
 {
     vimana_rx_packet_t packet;
@@ -95,6 +97,9 @@ void vtask_plane_state_machine(void *pvParameters)
 
 void app_main(void)
 {
+    // set pin 47 high to enable the ADC resistor divider (HW bug)
+    gpio_set_direction(47, GPIO_MODE_OUTPUT);
+    gpio_set_level(47, 1);
     ESP_ERROR_CHECK(nvs_flash_init());                  // Initialize NVS (used for Wifi driver)
     ESP_ERROR_CHECK(esp_netif_init());                  // Initialize TCP/IP stack
     ESP_ERROR_CHECK(esp_event_loop_create_default());   // Create FreeRTOS event loop
@@ -104,8 +109,28 @@ void app_main(void)
 
     init_leds();
     motor_init();
+    do_rainbow();
     set_leds((led_t){10,10,10}, (led_t){10,10,10});
     
+    servo_init();
+
+    while(1){
+        // sweep servo 1 from 0 to 180 degrees and back
+        for(int i=0; i<180; i++){
+            servo_set_angle(1, i);
+            led_hsl_t led = (led_hsl_t){i, 1, 0.50};
+            set_leds_hsl(led, led);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+        }
+        for(int i=180; i>0; i--){
+            servo_set_angle(1, i);
+            led_hsl_t led = (led_hsl_t){i, 1, 0.50};
+            set_leds_hsl(led, led);
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+        }
+    }
+
+
     vimana_network_init(vimana_rx_queue);
     set_leds((led_t){0,50,0}, (led_t){0,50,0});
     xTaskCreate(vtask_plane_state_machine, "rx_packet", 4096, NULL, 5, NULL);
